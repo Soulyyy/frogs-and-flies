@@ -1,5 +1,4 @@
-rootProject.name = 'parent'
+rootProject.name = 'frogs-and-flies'
 include 'server'
 include 'client'
 include 'commons'
-

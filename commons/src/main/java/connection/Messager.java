@@ -1,6 +1,9 @@
 package connection;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 
 /**
  * Created by Hans on 13/10/2015.

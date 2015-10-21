@@ -1,7 +1,5 @@
 package connection;
 
-import java.io.BufferedOutputStream;
-
 /**
  * Created by Hans on 14/10/2015.
  */

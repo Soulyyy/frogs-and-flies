@@ -1,33 +1,9 @@
-group 'distributed-systems'
-version '1.0'
-
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile project(':commons')
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'utils.Main'
-    }
+fatJar.manifest {
+    attributes 'Main-Class': 'utils.Main'
 }
 
-task fatJar(type: Jar) {
-    manifest {
-        attributes 'Main-Class': 'utils.Main'
-    }
-    baseName  = project.name
-    from {
-        configurations.compile.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-    }
-    with jar
-}
+build.dependsOn(fatJar)
