@@ -1,0 +1,43 @@
+group 'distributed-systems'
+version '1.0'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':client')
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+configurations {
+    releaseJars
+}
+
+dependencies {
+    releaseJars group: 'javax.mail', name: 'mail', version: '1.4'
+    //etc
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+    baseName  = project.name
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+}
