@@ -32,6 +32,7 @@ public class SubmitterThread<T extends Serializable> implements Runnable {
     while(true) {
       try {
         T resp = QUEUE.take();
+        //Now send to processor
       } catch (InterruptedException e) {
         e.printStackTrace();
       }

@@ -1,33 +1,29 @@
 package connection;
 
-import java.io.InputStream;
 import java.io.Serializable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.Future;
 
 /**
  * Created by Hans on 13/10/2015.
  */
 public class ReceiverThread<T extends Serializable> implements Runnable {
 
-  private final ExecutorCompletionService<T> EXECUTOR;
+/*  private final ExecutorCompletionService<T> EXECUTOR;
   private final InputStream INPUT;
-  //private final Socket SOCKET;
+  //private final Socket SOCKET;*/
 
   public ReceiverThread(Processor<T> processor) {
 
   }
 
-  public ReceiverThread(ExecutorCompletionService<T> executorService, InputStream in) {
+ /* public ReceiverThread(ExecutorCompletionService<T> executorService, InputStream in) {
     this.EXECUTOR = executorService;
     this.INPUT = in;
     //this.SOCKET = socket;
-  }
+  }*/
 
   @Override
   public void run() {
-    try {
+    /*try {
       while (true) {
         Future<T> future = EXECUTOR.take();
         System.out.println("Got something  Iguess");
@@ -41,6 +37,6 @@ public class ReceiverThread<T extends Serializable> implements Runnable {
       }
     } catch (InterruptedException | ExecutionException e) {
       e.printStackTrace();
-    }
+    }*/
   }
 }
