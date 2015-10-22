@@ -36,7 +36,8 @@ public class ClientImpl implements Client {
   public ClientImpl(String ip, int port) {
     LOGGER.info("Parameters are {}, {}", ip, port);
     ip = (ip == null) ? "localhost" : ip;
-    port = (port == 0) ? 0 : port;
+    //TODO think about this but fixing unrealistic port
+    port = (port == 0) ? 6666 : port;
     LOGGER.info("Initialized {} with {} and {}", ClientImpl.class, ip, port);
     this.ip = ip;
     this.port = port;

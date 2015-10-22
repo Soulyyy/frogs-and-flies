@@ -1,4 +1,9 @@
 import connection.HomeworkPacket;
+import connection.Messager;
+import connection.Service;
+import utils.Connection;
+import utils.Server;
+import utils.ServerImpl;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -16,6 +21,16 @@ public class Main {
 
   public static void main(String[] args) {
     System.out.println("Hello, World!");
+    Server server = new ServerImpl();
+    server.connect();
+    Connection connection = server.createSocket();
+    Service<HomeworkPacket> service = new Service<>(connection.getInputStream(), 150);
+    HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
+    service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, connection.getOutputStream()));
+    //We loop on a blocking operation, basically like NIO(since we are doing work on threads)
+/*    while (true) {
+
+    }*/
     try {
       ServerSocket serverSocket = new ServerSocket(6666);
       //Register the socket in a list, create thread for each

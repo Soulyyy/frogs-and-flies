@@ -24,15 +24,15 @@ public class Main {
 /*      Socket socket = new Socket("localhost", 6666);
       byte[] buffer = new byte[8092];
       String s = "terex";*/
-      //outputStream.write(s.getBytes());
-      //outputStream.flush();
-      //String data = new String(buffer).trim();
-      //System.out.println(data);
-      //buffer = new byte[8092];
-      Service<HomeworkPacket> service = new Service<>(client.getInputStream(), 150);
-      HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
-      service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, client.getOutputStream()));
-      //service.getSubmitterThread().submitTask(new Messager<>());
+    //outputStream.write(s.getBytes());
+    //outputStream.flush();
+    //String data = new String(buffer).trim();
+    //System.out.println(data);
+    //buffer = new byte[8092];
+    Service<HomeworkPacket> service = new Service<>(client.getInputStream(), 150);
+    HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
+    service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, client.getOutputStream()));
+    //service.getSubmitterThread().submitTask(new Messager<>());
 
 
     //This is for load testing at the moment, don't delete

@@ -1,6 +1,7 @@
 package connection;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Future;
@@ -8,11 +9,15 @@ import java.util.concurrent.Future;
 /**
  * Created by Hans on 13/10/2015.
  */
-public class ReceiverThread<T> implements Runnable {
+public class ReceiverThread<T extends Serializable> implements Runnable {
 
   private final ExecutorCompletionService<T> EXECUTOR;
   private final InputStream INPUT;
   //private final Socket SOCKET;
+
+  public ReceiverThread(Processor<T> processor) {
+
+  }
 
   public ReceiverThread(ExecutorCompletionService<T> executorService, InputStream in) {
     this.EXECUTOR = executorService;
