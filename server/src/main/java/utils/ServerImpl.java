@@ -29,6 +29,7 @@ public class ServerImpl implements Server {
     this.port = port;
   }
 
+
   @Override
   public void connect() {
     //Link them because no array access needed, only iteration

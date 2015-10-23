@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -75,8 +76,12 @@ public class ConnectionImpl<T> implements Connection {
   }
 
   @Override
-  public void submitMessage(T message) {
+  public void submitMessage(Serializable message) {
+    //Submit message, probably don't need service here
 
+
+
+    //service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, connection.getOutputStream()));
   }
 
 

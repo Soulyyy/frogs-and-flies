@@ -1,16 +1,8 @@
 import connection.HomeworkPacket;
-import connection.Messager;
 import connection.Service;
 import utils.Connection;
 import utils.Server;
 import utils.ServerImpl;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 /**
  * Created by Hans on 11/10/2015.
@@ -27,14 +19,15 @@ public class Main {
     //This should be done in connection
     Service<HomeworkPacket> service = new Service<>(connection.getInputStream(), 150);
     HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
-    service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, connection.getOutputStream()));
+    //service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, connection.getOutputStream()));
 
     //Figure out clean stop
     //Register Connections(representing Clients)
     int threadnumber = 0;
     while (true) {
       Connection con = server.createSocket();
-      con.
+      con.submitMessage(new HomeworkPacket(threadnumber, "start"));
+      threadnumber++;
     }
     //We loop on a blocking operation, basically like NIO(since we are doing work on threads)
 /*    while (true) {
