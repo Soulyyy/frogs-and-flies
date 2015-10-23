@@ -1,5 +1,6 @@
 package connection;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
 /**
@@ -7,6 +8,6 @@ import java.io.Serializable;
  */
 public interface Processor<T extends Serializable> extends Runnable {
   //Want this getter to force having an inputStream on the processor level
-  void getIntputStream();
+  InputStream getIntputStream();
 
 }

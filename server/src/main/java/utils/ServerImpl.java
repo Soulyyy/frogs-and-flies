@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Hans on 22/10/2015.
@@ -17,6 +19,8 @@ public class ServerImpl implements Server {
 
   ServerSocket serverSocket;
 
+  List<Connection> connections;
+
   public ServerImpl() {
     this(6666);
   }
@@ -27,7 +31,10 @@ public class ServerImpl implements Server {
 
   @Override
   public void connect() {
+    //Link them because no array access needed, only iteration
+    connections = new LinkedList<>();
     try {
+      //This operation blocks according to the javadoc
       serverSocket = new ServerSocket(port);
     } catch (IOException e) {
       LOGGER.error("IOException on opening ServerSocket, exiting.", e);
@@ -50,5 +57,10 @@ public class ServerImpl implements Server {
     Connection connection = new ConnectionImpl(null);
     LOGGER.debug("Connection {} is returned from socket", connection);
     return connection;
+  }
+
+  @Override
+  public List<Connection> getConnections() {
+    return connections;
   }
 }

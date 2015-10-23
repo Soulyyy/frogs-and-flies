@@ -24,13 +24,22 @@ public class Main {
     Server server = new ServerImpl();
     server.connect();
     Connection connection = server.createSocket();
+    //This should be done in connection
     Service<HomeworkPacket> service = new Service<>(connection.getInputStream(), 150);
     HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
     service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, connection.getOutputStream()));
+
+    //Figure out clean stop
+    //Register Connections(representing Clients)
+    int threadnumber = 0;
+    while (true) {
+      Connection con = server.createSocket();
+      con.
+    }
     //We loop on a blocking operation, basically like NIO(since we are doing work on threads)
 /*    while (true) {
 
-    }*/
+    /*}*//*
     try {
       ServerSocket serverSocket = new ServerSocket(6666);
       //Register the socket in a list, create thread for each
@@ -66,7 +75,7 @@ public class Main {
       }
     } catch (IOException e) {
       e.printStackTrace();
-    }
+    }*/
     //System.out.println("I AM HERE");
   }
 }

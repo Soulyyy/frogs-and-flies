@@ -12,7 +12,7 @@ import java.net.Socket;
 /**
  * Created by Hans on 22/10/2015.
  */
-public class ConnectionImpl implements Connection {
+public class ConnectionImpl<T> implements Connection {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ConnectionImpl.class);
 
@@ -73,4 +73,11 @@ public class ConnectionImpl implements Connection {
     }
     return null;
   }
+
+  @Override
+  public void submitMessage(T message) {
+
+  }
+
+
 }
