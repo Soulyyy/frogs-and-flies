@@ -1,12 +1,17 @@
+/*
 package connection;
 
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.concurrent.*;
 
+*/
 /**
  * Created by Hans on 14/10/2015.
- */
+ *//*
+
+
+//I think serivce should define interaction protocol and data being sent
 public class Service<T extends Serializable> {
 
   private ExecutorCompletionService<T> executorCompletionService;
@@ -18,6 +23,7 @@ public class Service<T extends Serializable> {
   private BlockingQueue<T> blockingQueue;
 
 
+*/
 /*  public Service(int threadCount) {
     this.threadCount = threadCount;
     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
@@ -29,7 +35,8 @@ public class Service<T extends Serializable> {
 
   public Service() {
     this(10);
-  }*/
+  }*//*
+
 
   public Service(InputStream input) {
     this(input, 10);
@@ -54,3 +61,4 @@ public class Service<T extends Serializable> {
     return this.submitterThread;
   }
 }
+*/

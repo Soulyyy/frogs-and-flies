@@ -2,7 +2,7 @@ package utils;
 
 import connection.HomeworkPacket;
 import connection.Messager;
-import connection.Service;
+//import connection.Service;
 import utils.utils.Client;
 import utils.utils.ClientImpl;
 
@@ -19,6 +19,7 @@ public class Main {
     Client client = new ClientImpl();
     client.connect();
     System.out.println("Client working!");
+
     BufferedOutputStream outputStream = new BufferedOutputStream(client.getOutputStream());
 
 /*      Socket socket = new Socket("localhost", 6666);
@@ -29,9 +30,10 @@ public class Main {
     //String data = new String(buffer).trim();
     //System.out.println(data);
     //buffer = new byte[8092];
-    Service<HomeworkPacket> service = new Service<>(client.getInputStream(), 150);
-    HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
-    service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, client.getOutputStream()));
+
+    //Service<HomeworkPacket> service = new Service<>(client.getInputStream(), 150);
+    //HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
+    //service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, client.getOutputStream()));
     //service.getSubmitterThread().submitTask(new Messager<>());
 
 

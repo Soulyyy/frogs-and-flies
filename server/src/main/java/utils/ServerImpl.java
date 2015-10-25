@@ -1,17 +1,24 @@
 package utils;
 
+import connection.HomeworkProcessor;
+import connection.ReceiverThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Hans on 22/10/2015.
  */
-public class ServerImpl implements Server {
+
+//Server receives, each connection submits, has type for now
+public class ServerImpl<T extends Serializable> implements Server {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ServerImpl.class);
 
@@ -20,6 +27,11 @@ public class ServerImpl implements Server {
   ServerSocket serverSocket;
 
   List<Connection> connections;
+
+  ReceiverThread<T> receiverThread;
+
+  //Server owns the processing queue, no need for type here I think
+  private BlockingQueue<T> blockingQueue;
 
   public ServerImpl() {
     this(6666);
@@ -34,6 +46,8 @@ public class ServerImpl implements Server {
   public void connect() {
     //Link them because no array access needed, only iteration
     connections = new LinkedList<>();
+    blockingQueue = new LinkedBlockingQueue<>(100);
+    receiverThread = new ReceiverThread<>(new HomeworkProcessor(), blockingQueue);
     try {
       //This operation blocks according to the javadoc
       serverSocket = new ServerSocket(port);
@@ -55,7 +69,7 @@ public class ServerImpl implements Server {
 
   @Override
   public Connection createSocket() {
-    Connection connection = new ConnectionImpl(null);
+    Connection connection = new ConnectionImpl(this.serverSocket);
     LOGGER.debug("Connection {} is returned from socket", connection);
     return connection;
   }

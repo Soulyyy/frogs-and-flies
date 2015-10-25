@@ -1,5 +1,5 @@
 import connection.HomeworkPacket;
-import connection.Service;
+//import connection.Service;
 import utils.Connection;
 import utils.Server;
 import utils.ServerImpl;
@@ -15,16 +15,17 @@ public class Main {
     System.out.println("Hello, World!");
     Server server = new ServerImpl();
     server.connect();
-    Connection connection = server.createSocket();
+    //Connection connection = server.createSocket();
     //This should be done in connection
-    Service<HomeworkPacket> service = new Service<>(connection.getInputStream(), 150);
-    HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
+    //Service<HomeworkPacket> service = new Service<>(connection.getInputStream(), 150);
+    //HomeworkPacket homeworkPacket = new HomeworkPacket(1, "terefsdfsdfsd");
     //service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, connection.getOutputStream()));
 
     //Figure out clean stop
     //Register Connections(representing Clients)
     int threadnumber = 0;
     while (true) {
+      System.out.println(threadnumber);
       Connection con = server.createSocket();
       con.submitMessage(new HomeworkPacket(threadnumber, "start"));
       threadnumber++;

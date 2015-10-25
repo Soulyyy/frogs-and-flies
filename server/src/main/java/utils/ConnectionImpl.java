@@ -23,7 +23,7 @@ public class ConnectionImpl<T> implements Connection {
   //Only need this constructor, server socket has all data we care about
   public ConnectionImpl(ServerSocket serverSocket) {
     try {
-      LOGGER.info("Trying to aquire Socket from {} with String description {}", serverSocket);
+      LOGGER.info("Trying to aquire Socket from {}", serverSocket);
       if (serverSocket == null) {
         LOGGER.warn("This server is null.");
       } else if (serverSocket.isClosed()) {
@@ -79,7 +79,7 @@ public class ConnectionImpl<T> implements Connection {
   public void submitMessage(Serializable message) {
     //Submit message, probably don't need service here
 
-
+    //TODO THIS NEXT
 
     //service.getSubmitterThread().submitTask(new Messager<>(homeworkPacket, connection.getOutputStream()));
   }

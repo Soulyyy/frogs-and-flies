@@ -6,13 +6,14 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.ConnectException;
 import java.net.Socket;
 
 /**
  * Created by Hans on 21/10/2015.
  */
-public class ClientImpl implements Client {
+public class ClientImpl<T extends Serializable> implements Client {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ClientImpl.class);
 
@@ -110,6 +111,17 @@ public class ClientImpl implements Client {
         return null;
       }
     }
+  }
+
+  @Override
+  public void submitMessage(Serializable message) {
+
+  }
+
+
+  @Override
+  public Serializable receiveMessage() {
+    return null;
   }
 
 }
