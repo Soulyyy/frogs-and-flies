@@ -1,4 +1,4 @@
-package utils.BlockingQueue;
+package BlockingQueue;
 
 /**
  * Created by Hans on 16/10/2015.

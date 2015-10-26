@@ -3,6 +3,7 @@ package connection;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -15,26 +16,44 @@ public class ReceiverThread<T extends Serializable> implements Runnable {
   //private final Socket SOCKET;*/
 
   private final BlockingQueue<T> QUEUE;
-  private final Processor<T> PROCESSOR;
+  //private final InputStream INPUTSTREAM;
+  private final Socket SOCKET;
 
-  public ReceiverThread(Processor<T> processor, BlockingQueue<T> blockingQueue) {
+  int id;
+
+  public ReceiverThread(Socket socket, BlockingQueue<T> blockingQueue, int id) {
     this.QUEUE = blockingQueue;
-    this.PROCESSOR = processor;
+    //this.PROCESSOR = processor;
+    this.SOCKET = socket;
+    //this.type = clazz;
+    this.id = id;
   }
 
- /* public ReceiverThread(ExecutorCompletionService<T> executorService, InputStream in) {
-    this.EXECUTOR = executorService;
-    this.INPUT = in;
-    //this.SOCKET = socket;
-  }*/
+
+  public void insertToQueue(T message) {
+    try {
+      QUEUE.put(message);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 
   @Override
   public void run() {
     while (true) {
       try {
-        ObjectInputStream objectInputStream = new ObjectInputStream(PROCESSOR.getIntputStream());
-      } catch (IOException e) {
+        ObjectInputStream objectInputStream = new ObjectInputStream(SOCKET.getInputStream());
+        Object object = objectInputStream.readObject();
+        System.out.println("THERE");
+        HomeworkPacket homeworkPacket = (HomeworkPacket) object;
+        homeworkPacket.id = this.id;
+        System.out.println(homeworkPacket.toString());
+        //TODO reimplement
+        QUEUE.put((T) homeworkPacket);
+      } catch (IOException | ClassNotFoundException | InterruptedException e) {
         e.printStackTrace();
+        break;
+        //TODO for cleint break other way
       }
     }
     /*try {

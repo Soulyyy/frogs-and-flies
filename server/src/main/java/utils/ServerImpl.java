@@ -1,7 +1,6 @@
 package utils;
 
-import connection.HomeworkProcessor;
-import connection.ReceiverThread;
+import connection.SubmitterThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 
 //Server receives, each connection submits, has type for now
-public class ServerImpl<T extends Serializable> implements Server {
+public class ServerImpl<T extends Serializable> implements Server<T> {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ServerImpl.class);
 
@@ -28,10 +27,10 @@ public class ServerImpl<T extends Serializable> implements Server {
 
   List<Connection> connections;
 
-  ReceiverThread<T> receiverThread;
-
   //Server owns the processing queue, no need for type here I think
   private BlockingQueue<T> blockingQueue;
+
+  private SubmitterThread<T> submitterThread;
 
   public ServerImpl() {
     this(6666);
@@ -47,7 +46,6 @@ public class ServerImpl<T extends Serializable> implements Server {
     //Link them because no array access needed, only iteration
     connections = new LinkedList<>();
     blockingQueue = new LinkedBlockingQueue<>(100);
-    receiverThread = new ReceiverThread<>(new HomeworkProcessor(), blockingQueue);
     try {
       //This operation blocks according to the javadoc
       serverSocket = new ServerSocket(port);
@@ -55,6 +53,8 @@ public class ServerImpl<T extends Serializable> implements Server {
       LOGGER.error("IOException on opening ServerSocket, exiting.", e);
       System.exit(1);
     }
+    this.submitterThread = new SubmitterThread<>(blockingQueue);
+    new Thread(submitterThread).start();
 
   }
 
@@ -68,8 +68,9 @@ public class ServerImpl<T extends Serializable> implements Server {
   }
 
   @Override
-  public Connection createSocket() {
-    Connection connection = new ConnectionImpl(this.serverSocket);
+  public Connection<T> createSocket(int id) {
+    Connection<T> connection = new ConnectionImpl<T>(this.serverSocket, blockingQueue, id);
+    this.submitterThread.addSocket(id, connection.getSocket());
     LOGGER.debug("Connection {} is returned from socket", connection);
     return connection;
   }

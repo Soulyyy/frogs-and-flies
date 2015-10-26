@@ -1,12 +1,10 @@
 package utils;
 
 import connection.HomeworkPacket;
-import connection.Messager;
-//import connection.Service;
-import utils.utils.Client;
-import utils.utils.ClientImpl;
 
 import java.io.BufferedOutputStream;
+
+//import connection.Service;
 
 /**
  * Created by Hans on 11/10/2015.
@@ -16,11 +14,15 @@ public class Main {
   //May need listener tasks as well(to submitter tasks)
 
   public static void main(String[] args) {
-    Client client = new ClientImpl();
+    Client<HomeworkPacket> client = new ClientImpl<HomeworkPacket>();
     client.connect();
     System.out.println("Client working!");
 
     BufferedOutputStream outputStream = new BufferedOutputStream(client.getOutputStream());
+    client.submitMessage(new HomeworkPacket(-1, "start"));
+    while (true) {
+    }
+
 
 /*      Socket socket = new Socket("localhost", 6666);
       byte[] buffer = new byte[8092];

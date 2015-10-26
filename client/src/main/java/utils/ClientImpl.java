@@ -1,5 +1,8 @@
-package utils.utils;
+package utils;
 
+import connection.Messager;
+import connection.ReceiverThread;
+import connection.SubmitterThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,11 +12,13 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Hans on 21/10/2015.
  */
-public class ClientImpl<T extends Serializable> implements Client {
+public class ClientImpl<T extends Serializable> implements Client<T> {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ClientImpl.class);
 
@@ -21,6 +26,12 @@ public class ClientImpl<T extends Serializable> implements Client {
   private int port;
 
   Socket socket;
+
+  private BlockingQueue<T> blockingQueue;
+
+  private ReceiverThread<T> receiverThread;
+
+  private SubmitterThread<T> submitterThread;
 
   public ClientImpl() {
     this("localhost", 6666);
@@ -51,10 +62,18 @@ public class ClientImpl<T extends Serializable> implements Client {
     } catch (IOException e) {
       if (e instanceof ConnectException) {
         LOGGER.error("Failed to connect to server", e);
+        return;
       } else {
         LOGGER.error("Unknown IOException", e);
+        return;
       }
     }
+    this.blockingQueue = new LinkedBlockingQueue<>(100);
+    //0 because client doesn't know the id it has
+    this.receiverThread = new ReceiverThread<>(socket, blockingQueue, 0);
+    new Thread(receiverThread).start();
+    this.submitterThread = new SubmitterThread<>(blockingQueue, socket, 0);
+    new Thread(submitterThread).start();
   }
 
   @Override
@@ -114,13 +133,16 @@ public class ClientImpl<T extends Serializable> implements Client {
   }
 
   @Override
-  public void submitMessage(Serializable message) {
-
+  public void submitMessage(T message) {
+    System.out.println(message.toString());
+    Messager messager = new Messager<T>(message, this.getOutputStream());
+    new Thread(messager).start();
   }
 
 
+  //TODO use utils
   @Override
-  public Serializable receiveMessage() {
+  public T receiveMessage() {
     return null;
   }
 

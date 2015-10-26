@@ -1,5 +1,6 @@
 package connection;
 
+import java.io.OutputStream;
 import java.io.Serializable;
 
 /**
@@ -7,7 +8,7 @@ import java.io.Serializable;
  */
 public class SendTCPRequest<T extends Serializable> {
 
-  public void sendMessage(T message) {
+  public void sendMessage(T message, OutputStream outputStream) {
 
   }
 }

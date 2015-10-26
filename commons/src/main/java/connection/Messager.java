@@ -38,15 +38,16 @@ public class Messager<T extends Serializable> implements Runnable {
       Object object = "TERE";
     }
     //BufferedInputStream is = new BufferedInputStream(inputStream);
-    byte[] buffer = new byte[8092];
     try {
+      //TODO AWESOME HACK HANS! no, remove this, sync better
+      Thread.sleep(500);
       ObjectOutputStream os = new ObjectOutputStream(outputStream);
       os.writeObject(parameter);
 
 /*      if(T instanceof String) {
         
       }*/
-    } catch (IOException e) {
+    } catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
     //System.out.println(parameter.toString());

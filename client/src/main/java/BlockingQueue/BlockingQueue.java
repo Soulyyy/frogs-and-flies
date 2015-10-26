@@ -1,4 +1,4 @@
-package utils.BlockingQueue;
+package BlockingQueue;
 
 import java.util.Collection;
 import java.util.Iterator;

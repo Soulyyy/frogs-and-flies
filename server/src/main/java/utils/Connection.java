@@ -3,6 +3,7 @@ package utils;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.Socket;
 
 /**
  * Created by Hans on 22/10/2015.
@@ -19,5 +20,7 @@ public interface Connection<T extends Serializable> {
 
   //TODO think about this, it is just to gain access to Service messaging(sending message outside handler)
   public void submitMessage(T message);
+
+  public Socket getSocket();
 
 }
