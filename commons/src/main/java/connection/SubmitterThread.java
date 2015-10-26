@@ -30,11 +30,8 @@ public class SubmitterThread<T extends Serializable> implements Runnable {
   }
 
   public SubmitterThread(BlockingQueue<T> blockingQueue, Socket socket, int id) {
-    if (map == null) {
-      map = new HashMap<>();
-    }
     this.QUEUE = blockingQueue;
-    map.put(id, socket);
+    //map.put(id, socket);
     this.socket = socket;
   }
 
@@ -51,9 +48,14 @@ public class SubmitterThread<T extends Serializable> implements Runnable {
         if (resp instanceof HomeworkPacket) {
           HomeworkPacket homeworkPacket = (HomeworkPacket) resp;
           int id = homeworkPacket.id;
-          System.out.println(map);
-          System.out.println(map.get(id));
-          messager = new Messager<T>(resp, map.get(id).getOutputStream());
+          if(this.socket == null) {
+            System.out.println(map);
+            System.out.println(id);
+            System.out.println(map.get(id));
+            messager = new Messager<T>(resp, map.get(id).getOutputStream());
+          } else {
+            messager = new Messager<T>(resp, socket.getOutputStream());
+          }
         }
         if (messager != null) {
           new Thread(messager).start();

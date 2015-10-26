@@ -46,7 +46,9 @@ public class ReceiverThread<T extends Serializable> implements Runnable {
         Object object = objectInputStream.readObject();
         System.out.println("THERE");
         HomeworkPacket homeworkPacket = (HomeworkPacket) object;
-        homeworkPacket.id = this.id;
+        if (homeworkPacket.id == -1) {
+          homeworkPacket.id = this.id;
+        }
         System.out.println(homeworkPacket.toString());
         //TODO reimplement
         QUEUE.put((T) homeworkPacket);
