@@ -13,16 +13,20 @@ public class Engine {
     gameField = new int[M][N];
   }
 
-  public void movePlayer(int m, int n, int uid) {
+  //We have the x and y coordinates, why not use them
+  public synchronized int[] movePlayer(int m, int n, int uid, int x, int y) {
+    int tx = -1;
+    int ty = -1;
     if(m < gameField.length && n < gameField[0].length) {
 
     }
     else {
       System.out.println("BORKEN REQUEST LALALALA");
     }
+    return new int[]{x, y};
   }
 
-  public int[][] getGameField() {
+  public synchronized int[][] getGameField() {
     return gameField;
   }
 }

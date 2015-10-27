@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Hans on 22/10/2015.
  */
-public interface Server<T extends Serializable> {
+public interface Server<T extends Serializable, U> {
 
   public void connect();
 

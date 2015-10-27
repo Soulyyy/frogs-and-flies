@@ -1,4 +1,6 @@
 import connection.HomeworkPacket;
+import engine.Engine;
+import engine.HomeworkProcessor;
 import utils.Server;
 import utils.ServerImpl;
 
@@ -13,7 +15,8 @@ public class Main {
 
   public static void main(String[] args) {
     System.out.println("Hello, World!");
-    Server<HomeworkPacket> server = new ServerImpl<>();
+    Engine engine = new Engine(8, 8);
+    Server<HomeworkPacket, HomeworkProcessor> server = new ServerImpl<>(() -> new HomeworkProcessor<>(engine));
     server.connect();
     int threadnumber = 0;
     while (true) {

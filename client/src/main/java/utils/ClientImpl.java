@@ -1,6 +1,7 @@
 package utils;
 
 import connection.Messager;
+import connection.Processor;
 import connection.ReceiverThread;
 import connection.SubmitterThread;
 import org.slf4j.Logger;
@@ -12,13 +13,15 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Supplier;
 
 /**
  * Created by Hans on 21/10/2015.
  */
-public class ClientImpl<T extends Serializable> implements Client<T> {
+public class ClientImpl<T extends Serializable, U extends Processor<T>> implements Client<T> {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ClientImpl.class);
 
@@ -31,10 +34,14 @@ public class ClientImpl<T extends Serializable> implements Client<T> {
 
   private ReceiverThread<T> receiverThread;
 
-  private SubmitterThread<T> submitterThread;
+  private SubmitterThread<T, U> submitterThread;
 
-  public ClientImpl() {
-    this("localhost", 6666);
+  private Supplier<U> supplier;
+
+  public ClientImpl(Supplier<U> supplier) {
+    this.ip = "localhost";
+    this.port = 6666;
+    this.supplier = Objects.requireNonNull(supplier);
   }
 
   public ClientImpl(int port) {
@@ -72,7 +79,7 @@ public class ClientImpl<T extends Serializable> implements Client<T> {
     //0 because client doesn't know the id it has
     this.receiverThread = new ReceiverThread<>(socket, blockingQueue, 0);
     new Thread(receiverThread).start();
-    this.submitterThread = new SubmitterThread<>(blockingQueue, socket, 0);
+    this.submitterThread = new SubmitterThread<>(blockingQueue, socket, 0, supplier);
     new Thread(submitterThread).start();
   }
 
@@ -135,7 +142,7 @@ public class ClientImpl<T extends Serializable> implements Client<T> {
   @Override
   public void submitMessage(T message) {
     System.out.println(message.toString());
-    Messager messager = new Messager<T>(message, this.getOutputStream());
+    Messager messager = new Messager<>(message, this.getOutputStream());
     new Thread(messager).start();
   }
 
@@ -146,4 +153,7 @@ public class ClientImpl<T extends Serializable> implements Client<T> {
     return null;
   }
 
+  public ReceiverThread<T> getReceiverThread() {
+    return receiverThread;
+  }
 }

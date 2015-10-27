@@ -14,7 +14,7 @@ public class Main {
   //May need listener tasks as well(to submitter tasks)
 
   public static void main(String[] args) {
-    Client<HomeworkPacket> client = new ClientImpl<HomeworkPacket>();
+    Client<HomeworkPacket> client = new ClientImpl<>(ClientProcessor::new);
     client.connect();
     System.out.println("Client working!");
 

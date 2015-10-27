@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+import java.util.function.Supplier;
 
 /**
  * Created by Hans on 13/10/2015.
  */
-public class SubmitterThread<T extends Serializable> implements Runnable {
+public class SubmitterThread<T extends Serializable, U extends Processor<T>> implements Runnable {
 
   private final BlockingQueue<T> QUEUE;
 
@@ -18,22 +20,26 @@ public class SubmitterThread<T extends Serializable> implements Runnable {
   //Synced hashmap with uid from homeworkpacket(initially 0, but need to change it)
   private HashMap<Integer, Socket> map;
 
-  public SubmitterThread(BlockingQueue<T> blockingQueue) {
+  Supplier<U> supplier;
+
+  public SubmitterThread(BlockingQueue<T> blockingQueue, Supplier<U> supplier) {
+    this.supplier = Objects.requireNonNull(supplier);
     this.QUEUE = blockingQueue;
     if (map == null) {
       this.map = new HashMap<>();
     }
   }
 
+  public SubmitterThread(BlockingQueue<T> blockingQueue, Socket socket, int id, Supplier<U> supplier) {
+    this.supplier = Objects.requireNonNull(supplier);
+    this.QUEUE = blockingQueue;
+    this.socket = socket;
+  }
+
   public void addSocket(int id, Socket socket) {
     map.put(id, socket);
   }
 
-  public SubmitterThread(BlockingQueue<T> blockingQueue, Socket socket, int id) {
-    this.QUEUE = blockingQueue;
-    //map.put(id, socket);
-    this.socket = socket;
-  }
 
   @Override
   public void run() {
@@ -41,13 +47,16 @@ public class SubmitterThread<T extends Serializable> implements Runnable {
     while (true) {
       try {
         T input = QUEUE.take();
-        Processor processor = new HomeworkProcessor<>();
+        U processor = supplier.get();
+        //Processor processor = new HomeworkProcessor<>();
         //TODO shit cast, work with it
         Messager messager = null;
-        T resp = (T) processor.process(input);
+        //T resp = (T) processor.process(input);
+        T resp = processor.process(input);
         if (resp instanceof HomeworkPacket) {
+          System.out.println("TERXXXXX");
           HomeworkPacket homeworkPacket = (HomeworkPacket) resp;
-          int id = homeworkPacket.id;
+          int id = homeworkPacket.getId();
           if(this.socket == null) {
             System.out.println(map);
             System.out.println(id);

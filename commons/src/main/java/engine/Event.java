@@ -1,11 +1,13 @@
 package engine;
 
+import java.io.Serializable;
+
 /**
  * Created by Hans on 26/10/2015.
  */
 
 //Need extra class to imitate tuple. Technically a rolling(circular) queue. Every user has an event queue
-public class Event {
+public class Event implements Serializable {
 
   private int firstEvent;
   private int secondEvent;

@@ -1,19 +1,26 @@
 package connection;
 
+import engine.Character;
+import engine.Event;
+
 import java.io.Serializable;
 
 /**
  * Created by Hans on 19/10/2015.
  */
 public class HomeworkPacket implements Serializable {
-  int id;
-  String message;
+  private int id;
+  private String message;
 
-  int score;
+  private String username;
 
-  int offset;
+  private int x;
+  private int y;
 
-  int[][] gamefield;
+  private Character character;
+
+  private Event event;
+
   //Example of what happens to transient fields
   transient String teletups = "TELETUPS";
 
@@ -22,11 +29,13 @@ public class HomeworkPacket implements Serializable {
 
   }
 
-  public HomeworkPacket(int id, int score, int offset, int[][] gamefield) {
+  public HomeworkPacket(int id, Event event, int x, int y, Character character, String username) {
     this.id = id;
-    this.score = score;
-    this.offset = offset;
-    this.gamefield = gamefield;
+    this.event = event;
+    this.x = x;
+    this.y = y;
+    this.character = character;
+    this.username = username;
   }
 
   public HomeworkPacket(int id, String message) {
@@ -37,8 +46,44 @@ public class HomeworkPacket implements Serializable {
   @Override
   public String toString() {
     return "HomeworkPacket{" +
-        "id:" + id +
-        ", message:'" + message + '\'' +
+        "event=" + event +
+        ", character=" + character +
+        ", y=" + y +
+        ", x=" + x +
+        ", message='" + message + '\'' +
+        ", id=" + id +
         '}';
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public Event getEvent() {
+    return event;
+  }
+
+  public Character getCharacter() {
+    return character;
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
   }
 }

@@ -1,5 +1,6 @@
 package utils;
 
+import connection.Processor;
 import connection.SubmitterThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,15 +10,17 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Supplier;
 
 /**
  * Created by Hans on 22/10/2015.
  */
 
 //Server receives, each connection submits, has type for now
-public class ServerImpl<T extends Serializable> implements Server<T> {
+public class ServerImpl<T extends Serializable, U extends Processor<T>> implements Server<T, U> {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ServerImpl.class);
 
@@ -27,17 +30,22 @@ public class ServerImpl<T extends Serializable> implements Server<T> {
 
   List<Connection> connections;
 
+  Supplier<U> supplier;
+
   //Server owns the processing queue, no need for type here I think
   private BlockingQueue<T> blockingQueue;
 
-  private SubmitterThread<T> submitterThread;
+  private SubmitterThread<T, U> submitterThread;
 
-  public ServerImpl() {
-    this(6666);
+  public ServerImpl(Supplier<U> supplier) {
+    this.supplier = Objects.requireNonNull(supplier);
+    this.port = 6666;
   }
 
-  public ServerImpl(int port) {
+  public ServerImpl(int port, Supplier<U> supplier) {
+    this.supplier = Objects.requireNonNull(supplier);
     this.port = port;
+
   }
 
 
@@ -53,7 +61,7 @@ public class ServerImpl<T extends Serializable> implements Server<T> {
       LOGGER.error("IOException on opening ServerSocket, exiting.", e);
       System.exit(1);
     }
-    this.submitterThread = new SubmitterThread<>(blockingQueue);
+    this.submitterThread = new SubmitterThread<>(blockingQueue, supplier);
     new Thread(submitterThread).start();
 
   }
@@ -69,7 +77,7 @@ public class ServerImpl<T extends Serializable> implements Server<T> {
 
   @Override
   public Connection<T> createSocket(int id) {
-    Connection<T> connection = new ConnectionImpl<T>(this.serverSocket, blockingQueue, id);
+    Connection<T> connection = new ConnectionImpl<>(this.serverSocket, blockingQueue, id);
     this.submitterThread.addSocket(id, connection.getSocket());
     LOGGER.debug("Connection {} is returned from socket", connection);
     return connection;

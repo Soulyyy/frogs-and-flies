@@ -21,6 +21,8 @@ public interface Client<T extends Serializable> {
 
   public T receiveMessage();
 
+  //public ReceiverThread<T> getReceiverThread();
+
 
 
 }

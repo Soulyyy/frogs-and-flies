@@ -44,10 +44,9 @@ public class ReceiverThread<T extends Serializable> implements Runnable {
       try {
         ObjectInputStream objectInputStream = new ObjectInputStream(SOCKET.getInputStream());
         Object object = objectInputStream.readObject();
-        System.out.println("THERE");
         HomeworkPacket homeworkPacket = (HomeworkPacket) object;
-        if (homeworkPacket.id == -1) {
-          homeworkPacket.id = this.id;
+        if (homeworkPacket.getId() == -1) {
+          homeworkPacket.setId(this.id);
         }
         System.out.println(homeworkPacket.toString());
         //TODO reimplement
@@ -55,23 +54,8 @@ public class ReceiverThread<T extends Serializable> implements Runnable {
       } catch (IOException | ClassNotFoundException | InterruptedException e) {
         e.printStackTrace();
         break;
-        //TODO for cleint break other way
+        //TODO for client break other way
       }
     }
-    /*try {
-      while (true) {
-        Future<T> future = EXECUTOR.take();
-        System.out.println("Got something  Iguess");
-        T t = future.get();
-        System.out.println(t);
-        if (t == null) {
-          System.out.println("No response");
-        } else {
-          System.out.println(t.toString());
-        }
-      }
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }*/
   }
 }
