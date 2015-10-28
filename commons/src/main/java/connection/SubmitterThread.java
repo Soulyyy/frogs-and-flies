@@ -59,6 +59,7 @@ public class SubmitterThread<T extends Serializable, U extends Processor<T>> imp
         if (resp instanceof HomeworkPacket) {
           System.out.println("TERXXXXX");
           HomeworkPacket homeworkPacket = (HomeworkPacket) resp;
+          System.out.println("JUST BEFORE INSERT: \n"+homeworkPacket.toString());
           int id = homeworkPacket.getId();
           if (this.socket == null) {
             System.out.println(map);

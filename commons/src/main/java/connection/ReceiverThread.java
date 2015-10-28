@@ -50,6 +50,7 @@ public class ReceiverThread<T extends Serializable> implements Runnable {
         }
         System.out.println(homeworkPacket.toString());
         //TODO reimplement
+        System.out.println("PUTTING THIS GUY:\n"+homeworkPacket);
         QUEUE.put((T) homeworkPacket);
       } catch (IOException | ClassNotFoundException | InterruptedException e) {
         e.printStackTrace();

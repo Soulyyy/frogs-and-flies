@@ -18,7 +18,7 @@ public class Engine {
   //This field contains the whole game field
   //private static int[][] gameField;
 
-  private static Character[][] game;
+  private Character[][] game;
 
   public Engine(int M, int N) {
     game = new Character[M][N];
@@ -39,18 +39,19 @@ public class Engine {
     }
     LOGGER.info("Trying to move from ({} , {}) to ({} , {})" + x, y, n, m);
     if (character instanceof Frog && !((Frog) character).checkAlive()) {
-      return new int[]{-666};
+      dead.add(character);
     }
     if (dead.contains(character)) {
       dead.remove(character);
       for(int i = 0; i < game.length; i++) {
         for(int j = 0 ; j < game[0].length ; j++) {
-          if(game[i][j].equals(character)) {
+          if(game[i][j] != null && game[i][j].equals(character)) {
             game[i][j] = null;
-            break;
+            return new int[]{-666};
           }
         }
       }
+      LOGGER.warn("SOMETHING DIED!");
       return new int[]{-666};
     }
     if (m < game.length && n < game[0].length && m >= 0 && n >= 0) {
@@ -68,13 +69,15 @@ public class Engine {
       }*/
       LOGGER.info("Changing values");
       LOGGER.info("x is : {} and y is : {}", x, y);
-      LOGGER.info("n is : {} and m is :", n, m);
+      LOGGER.info("n is : {} and m is : ", n, m);
+      System.out.println(m <= 0);
+      System.out.println(m);
       game[x][y] = null;
       game[m][n] = character;
     } else {
       System.out.println("BORKEN REQUEST LALALALA");
     }
-    System.out.println("New position is"+m+" "+n);
+    System.out.println("New position is" +m+" "+n);
     return new int[]{n, m};
   }
 
@@ -112,5 +115,14 @@ public class Engine {
       }
     }
     return resp;
+  }
+
+//TODO Remove, quick hack
+  public Character[][] getGame() {
+    return game;
+  }
+
+  public void addCharacter(Character character, int x, int y) {
+    game[y][x] = character;
   }
 }

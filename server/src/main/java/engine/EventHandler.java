@@ -20,15 +20,15 @@ public class EventHandler {
     switch (event.getFirstEvent()) {
       case 1:
         if(b) {
-          return new int[]{x, y+2};
-        } else {
-          return new int[]{x, y+1};
-        }
-      case 2:
-        if(b) {
           return new int[]{x, y-2};
         } else {
           return new int[]{x, y-1};
+        }
+      case 2:
+        if(b) {
+          return new int[]{x, y+2};
+        } else {
+          return new int[]{x, y+1};
         }
       case 3:
         if(b) {

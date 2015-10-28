@@ -1,10 +1,12 @@
 package engine;
 
 
+import java.io.Serializable;
+
 /**
  * Created by Hans on 26/10/2015.
  */
-public class Frog implements Character {
+public class Frog implements Character, Serializable {
 
   public int x;
   public int y;
@@ -35,8 +37,9 @@ public class Frog implements Character {
     int[][] ints = this.gameField;
     for (int i = 0; i < ints.length; i++) {
       for (int j = 0; j < ints[0].length; j++) {
-        if (!(i >= this.y - vision && i <= this.y + vision && j >= this.x - vision && j <= this.x + vision)) {
-          ints[i][j] = 0;
+        if(!(this.x + vision >= j && this.x-vision <= j && this.y + vision >=i && this.y -vision <= i)) {
+          ints[j][i] = 0;
+
         }
       }
     }

@@ -1,9 +1,11 @@
 package engine;
 
+import java.io.Serializable;
+
 /**
  * Created by Hans on 26/10/2015.
  */
-public class Spectator implements Character {
+public class Spectator implements Character, Serializable {
 
 
   int[][] gameField;
@@ -29,6 +31,10 @@ public class Spectator implements Character {
   @Override
   public void updateScore() {
     //No need for this character to have this method. Others need
+  }
+
+  public void updateMap(int[][] gameField) {
+    this.gameField = gameField;
   }
 
   @Override

@@ -16,6 +16,7 @@ public class ClientProcessor<T extends Serializable> implements Processor<Homewo
   public synchronized HomeworkPacket process(HomeworkPacket message) {
     if(message.getId() == -100) {
       System.out.println("Dead");
+      System.exit(0);
     }
     if (message.getCharacter() != null) {
       System.out.println("NOP IM NOT NULL");
