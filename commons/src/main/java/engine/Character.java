@@ -13,4 +13,6 @@ public interface Character extends Serializable {
   public int[] [] mask();
 
   public void updateScore();
+
+  public String getScore();
 }

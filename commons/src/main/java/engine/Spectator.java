@@ -30,4 +30,9 @@ public class Spectator implements Character {
   public void updateScore() {
     //No need for this character to have this method. Others need
   }
+
+  @Override
+  public String getScore() {
+    return "Spectating...";
+  }
 }

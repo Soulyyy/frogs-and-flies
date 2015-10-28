@@ -34,7 +34,7 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
     int y = homeworkPacket.getY();
     if (homeworkPacket.getEvent() != null) {
       Event event = homeworkPacket.getEvent();
-      if (character instanceof Spectator ) {
+      if (character instanceof Spectator) {
         System.out.println("SPECTATOR DONT CARE");
 
         //Choose frog
@@ -55,25 +55,66 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
           System.out.println("not a valid event");
         }
       } else if (character instanceof Frog) {
+        System.out.println("Found a frog");
         boolean doubleMove = event.getEvents()[0] == event.getEvents()[1];
+
         Frog tmp = (Frog) character;
+        int[] ints = processFrog(tmp, doubleMove, event, x, y);
+        if (ints.length == 1) {
+          System.out.println("DEAD");
+          new HomeworkPacket(-100, "Dead");
+
+
+        } else {
+          tmp.updateMap(engine.getGameField(tmp), ints[0], ints[1]);
+          for(int i = 0; i< engine.getGameField().length; i++) {
+            for(int j = 0; j < engine.getGameField()[0].length;j++) {
+              System.out.print(engine.getGameField()[i][j]);
+            }
+            System.out.println();
+          }
+        }
+        character = tmp;
+
       } else if (character instanceof Fly) {
+        System.out.println("Found a fly");
         Fly tmp = (Fly) character;
+        int[] ints = processFly(tmp, event, x, y);
+        if (ints.length == 1) {
+          System.out.println("DEAD");
+          new HomeworkPacket(-100, "Dead");
+        } else {
+          tmp.updateMap(engine.getGameField(tmp), ints[0], ints[1]);
+          for(int i = 0; i< engine.getGameField().length; i++) {
+            for(int j = 0; j < engine.getGameField()[0].length;j++) {
+              System.out.print(engine.getGameField()[i][j]);
+            }
+            System.out.println();
+          }
+        }
+        character = tmp;
 
       }
 
     }
     //Always send empty event back, null the queue
-    HomeworkPacket resp = new HomeworkPacket(homeworkPacket.getId(), new Event(0), x, y, character, homeworkPacket.getUsername());
+    HomeworkPacket resp = new HomeworkPacket(homeworkPacket.getId(), new Event(-1), character, homeworkPacket.getUsername());
     return resp;
   }
 
-  private void processFrog(Frog frog, boolean doubleMove) {
-
+  private int[] processFrog(Frog frog, boolean doubleMove, Event event, int x, int y) {
+    System.out.println("Processing frog movement");
+    int[] ints = EventHandler.processEvent(event, doubleMove, x, y);
+    System.out.println("INTS LENGTH: "+ints.length);
+    System.out.println("0:"+ints[0]);
+    System.out.println("1:"+ints[1]);
+    return engine.validatePosition(x, y, frog, ints[0], ints[1]);
   }
 
-  private void processFly(Fly fly) {
-
+  private int[] processFly(Fly fly, Event event, int x, int y) {
+    System.out.println("Processing fly movement");
+    int[] ints = EventHandler.processEvent(event, false, x, y);
+    return engine.validatePosition(x, y, fly, ints[0], ints[1]);
   }
 
 

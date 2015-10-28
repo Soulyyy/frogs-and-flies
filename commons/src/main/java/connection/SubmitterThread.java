@@ -3,9 +3,9 @@ package connection;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 /**
@@ -18,7 +18,7 @@ public class SubmitterThread<T extends Serializable, U extends Processor<T>> imp
   private Socket socket;
 
   //Synced hashmap with uid from homeworkpacket(initially 0, but need to change it)
-  private HashMap<Integer, Socket> map;
+  private ConcurrentHashMap<Integer, Socket> map;
 
   Supplier<U> supplier;
 
@@ -26,7 +26,7 @@ public class SubmitterThread<T extends Serializable, U extends Processor<T>> imp
     this.supplier = Objects.requireNonNull(supplier);
     this.QUEUE = blockingQueue;
     if (map == null) {
-      this.map = new HashMap<>();
+      this.map = new ConcurrentHashMap<>();
     }
   }
 
@@ -40,6 +40,9 @@ public class SubmitterThread<T extends Serializable, U extends Processor<T>> imp
     map.put(id, socket);
   }
 
+  public Socket removeSocket(int id) {
+    return map.remove(id);
+  }
 
   @Override
   public void run() {
@@ -57,7 +60,7 @@ public class SubmitterThread<T extends Serializable, U extends Processor<T>> imp
           System.out.println("TERXXXXX");
           HomeworkPacket homeworkPacket = (HomeworkPacket) resp;
           int id = homeworkPacket.getId();
-          if(this.socket == null) {
+          if (this.socket == null) {
             System.out.println(map);
             System.out.println(id);
             System.out.println(map.get(id));

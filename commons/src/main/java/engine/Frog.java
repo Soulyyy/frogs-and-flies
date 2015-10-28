@@ -6,8 +6,8 @@ package engine;
  */
 public class Frog implements Character {
 
-  int x;
-  int y;
+  public int x;
+  public int y;
   long startTime;
 
   long score;
@@ -31,11 +31,11 @@ public class Frog implements Character {
 
   @Override
   public int[][] mask() {
-    int vision = 2;
+    int vision = 1;
     int[][] ints = this.gameField;
     for (int i = 0; i < ints.length; i++) {
       for (int j = 0; j < ints[0].length; j++) {
-        if (!(i >= this.y - vision && i <= this.y + vision || j >= this.x - vision && j <= this.x + vision)) {
+        if (!(i >= this.y - vision && i <= this.y + vision && j >= this.x - vision && j <= this.x + vision)) {
           ints[i][j] = 0;
         }
       }
@@ -50,5 +50,26 @@ public class Frog implements Character {
   public void updateScore() {
     score++;
     this.startTime = System.currentTimeMillis();
+  }
+
+  @Override
+  public String getScore() {
+    return score+"";
+  }
+
+  public void updateMap(int[][] gameField, int x, int y) {
+    this.gameField = gameField;
+    this.x = x;
+    this.y = y;
+  }
+
+  @Override
+  public String toString() {
+    return "Frog{" +
+        "x=" + x +
+        ", y=" + y +
+        ", startTime=" + startTime +
+        ", score=" + score +
+        '}';
   }
 }

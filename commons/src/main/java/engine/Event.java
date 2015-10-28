@@ -6,6 +6,15 @@ import java.io.Serializable;
  * Created by Hans on 26/10/2015.
  */
 
+  /*
+  1 - up
+  2 - down
+  3 - left
+  4 - right
+  5 - choose frog
+  6 - choose fly
+   */
+
 //Need extra class to imitate tuple. Technically a rolling(circular) queue. Every user has an event queue
 public class Event implements Serializable {
 
@@ -31,4 +40,11 @@ public class Event implements Serializable {
     return firstEvent;
   }
 
+  @Override
+  public String toString() {
+    return "Event{" +
+        "firstEvent=" + firstEvent +
+        ", secondEvent=" + secondEvent +
+        '}';
+  }
 }

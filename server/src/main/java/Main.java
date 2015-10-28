@@ -11,8 +11,6 @@ import utils.ServerImpl;
  */
 public class Main {
 
-  //Datastream vs object*Stream should migrate to data, serialize and deserialize manually
-
   public static void main(String[] args) {
     System.out.println("Hello, World!");
     Engine engine = new Engine(8, 8);

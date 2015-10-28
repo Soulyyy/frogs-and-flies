@@ -16,21 +16,35 @@ public class EventHandler {
    */
 
   //TODO Maybe store uid location?
-  public void processEvent(int event, int uid) {
-    switch (event) {
+  public static int[] processEvent(Event event, boolean b, int x, int y) {
+    switch (event.getFirstEvent()) {
       case 1:
-        break;
+        if(b) {
+          return new int[]{x, y+2};
+        } else {
+          return new int[]{x, y+1};
+        }
       case 2:
-        break;
+        if(b) {
+          return new int[]{x, y-2};
+        } else {
+          return new int[]{x, y-1};
+        }
       case 3:
-        break;
+        if(b) {
+          return new int[]{x-2, y};
+        } else {
+          return new int[]{x-1, y};
+        }
       case 4:
-        break;
-      case 5:
-        break;
+        if(b) {
+          return new int[]{x+2, y};
+        } else {
+          return new int[]{x+1, y};
+        }
       default:
         System.out.println("REALLY BROKEN");
-        System.exit(1);
+        return new int[]{x, y};
     }
   }
 

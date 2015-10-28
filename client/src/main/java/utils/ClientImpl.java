@@ -48,8 +48,10 @@ public class ClientImpl<T extends Serializable, U extends Processor<T>> implemen
     this("localhost", port);
   }
 
-  public ClientImpl(String ip) {
-    this(ip, 6666);
+  public ClientImpl(String ip, Supplier<U> supplier) {
+    this.ip = ip;
+    this.port = 6666;
+    this.supplier = Objects.requireNonNull(supplier);
   }
 
   public ClientImpl(String ip, int port) {

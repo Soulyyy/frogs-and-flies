@@ -5,8 +5,8 @@ package engine;
  */
 public class Fly implements Character {
 
-  int x;
-  int y;
+  public int x;
+  public int y;
   long startTime;
 
   long score;
@@ -28,13 +28,19 @@ public class Fly implements Character {
     return this.gameField;
   }
 
+  public void updateMap(int[][] gameField, int x, int y) {
+    this.gameField = gameField;
+    this.x = x;
+    this.y = y;
+  }
+
   @Override
   public int[][] mask() {
     int vision = 2;
     int[][] ints = this.gameField;
     for (int i = 0; i < ints.length; i++) {
       for (int j = 0; j < ints[0].length; j++) {
-        if (!(i >= this.y - vision && i <= this.y + vision || j >= this.x - vision && j <= this.x + vision)) {
+        if (!(i >= this.y - vision && i <= this.y + vision && j >= this.x - vision && j <= this.x + vision)) {
           ints[i][j] = 0;
         }
       }
@@ -42,8 +48,22 @@ public class Fly implements Character {
     return ints;
   }
 
+  @Override
+  public String toString() {
+    return "Fly{" +
+        "x=" + x +
+        ", y=" + y +
+        ", startTime=" + startTime +
+        ", score=" + score +
+        '}';
+  }
 
   public void updateScore() {
     this.score = (System.currentTimeMillis() - startTime) / 12000;
+  }
+
+  @Override
+  public String getScore() {
+    return score+"";
   }
 }

@@ -29,11 +29,9 @@ public class HomeworkPacket implements Serializable {
 
   }
 
-  public HomeworkPacket(int id, Event event, int x, int y, Character character, String username) {
+  public HomeworkPacket(int id, Event event, Character character, String username) {
     this.id = id;
     this.event = event;
-    this.x = x;
-    this.y = y;
     this.character = character;
     this.username = username;
   }
