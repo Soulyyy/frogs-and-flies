@@ -14,7 +14,7 @@ public class ClientProcessor<T extends Serializable> implements Processor<Homewo
 
   @Override
   public synchronized HomeworkPacket process(HomeworkPacket message) {
-    if(message.getId() == -100) {
+    if(message.getId() == -100 || message.getId() == -666) {
       System.out.println("Dead");
       System.exit(0);
     }

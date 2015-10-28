@@ -18,7 +18,7 @@ public class Engine {
   //This field contains the whole game field
   //private static int[][] gameField;
 
-  private Character[][] game;
+  private static Character[][] game;
 
   public Engine(int M, int N) {
     game = new Character[M][N];
@@ -29,6 +29,19 @@ public class Engine {
   //This is part of the main loop
   //Check with array length
   public synchronized int[] validatePosition(int m, int n, Character character, int x, int y) {
+    //Ad hoc fix, dont remove from list, always dead, always blocked
+    if (dead.contains(character)) {
+      for(int i = 0; i < game.length; i++) {
+        for(int j = 0 ; j < game[0].length ; j++) {
+          if(game[i][j] != null && game[i][j].equals(character)) {
+            game[i][j] = null;
+            LOGGER.warn("SOMETHING DIED!");
+            break;
+          }
+        }
+      }
+      return new int[]{-666};
+    }
     if (character instanceof Frog) {
       x = ((Frog) character).x;
       y = ((Frog) character).y;
@@ -41,32 +54,22 @@ public class Engine {
     if (character instanceof Frog && !((Frog) character).checkAlive()) {
       dead.add(character);
     }
-    if (dead.contains(character)) {
-      dead.remove(character);
-      for(int i = 0; i < game.length; i++) {
-        for(int j = 0 ; j < game[0].length ; j++) {
-          if(game[i][j] != null && game[i][j].equals(character)) {
-            game[i][j] = null;
-            return new int[]{-666};
-          }
-        }
-      }
-      LOGGER.warn("SOMETHING DIED!");
-      return new int[]{-666};
-    }
     if (m < game.length && n < game[0].length && m >= 0 && n >= 0) {
       Character newSpot = game[m][n];
       if (newSpot != null) {
         if (newSpot instanceof Fly && character instanceof Frog) {
           dead.add(newSpot);
+          //newSpot = null;
+          game[m][n] = null;
+          character.updateScore();
 
         } else if (newSpot instanceof Frog && character instanceof Fly) {
           dead.add(character);
+          character = null;
+          newSpot.updateScore();
+          return new int[]{-666};
         }
       }
-/*      if(x == m && y == n) {
-        return new int[]{m, n};
-      }*/
       LOGGER.info("Changing values");
       LOGGER.info("x is : {} and y is : {}", x, y);
       LOGGER.info("n is : {} and m is : ", n, m);

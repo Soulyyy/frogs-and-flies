@@ -49,7 +49,7 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
             x = (int) Math.round(Math.random() * (engine.getGameField()[0].length - 1));
             y = (int) Math.round(Math.random() * (engine.getGameField().length - 1));
             if (engine.getGame()[y][x] == null) {
-              character = new Frog(this.engine.getGameField(), x, y);
+              character = new Frog(this.engine.getGameField(), y, x);
               engine.addCharacter(character, x, y);
               break;
             }
@@ -61,10 +61,10 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
           System.out.println("Created new fly");
           //character = new Fly(this.engine.getGameField(), 0, 0);
           while (true) {
-            x = (int) Math.round(Math.random() * (engine.getGameField()[0].length - 1));
-            y = (int) Math.round(Math.random() * (engine.getGameField().length - 1));
+            x = (int) Math.round(Math.random() * (engine.getGame()[0].length - 1));
+            y = (int) Math.round(Math.random() * (engine.getGame().length - 1));
             if (engine.getGame()[y][x] == null) {
-              character = new Fly(this.engine.getGameField(), x, y);
+              character = new Fly(this.engine.getGameField(), y, x);
               engine.addCharacter(character, x, y);
               break;
             }

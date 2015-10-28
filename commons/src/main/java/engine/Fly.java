@@ -34,6 +34,8 @@ public class Fly implements Character, Serializable {
     this.gameField = gameField;
     this.x = x;
     this.y = y;
+    //Why not
+    updateScore();
   }
 
   @Override
@@ -64,7 +66,7 @@ public class Fly implements Character, Serializable {
   }
 
   public void updateScore() {
-    this.score = (System.currentTimeMillis() - startTime) / 12000;
+    this.score = (System.currentTimeMillis() - startTime) / 12;
   }
 
   @Override
