@@ -8,12 +8,12 @@ import java.util.List;
  */
 public interface Server<T extends Serializable, U> {
 
-  public void connect();
+  void connect();
 
-  public void close();
+  void close();
 
-  public Connection<T> createSocket(int id);
+  Connection createSocket(int id);
 
-  public List<Connection> getConnections();
+  List<Connection> getConnections();
 
 }

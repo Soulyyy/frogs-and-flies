@@ -22,13 +22,11 @@ public class ClientProcessor<T extends Serializable> implements Processor<Homewo
       System.out.println("NOP IM NOT NULL");
       Main.updateGameField(message.getCharacter().visibleMap());
     }
-    if ("started".equals(message.getMessage())) {
-    }
     if (Cache.event != null) {
       HomeworkPacket homeworkPacket = new HomeworkPacket(message.getId(), Cache.event, message.getCharacter(), "kolja");
       //Deref the old event
       Cache.event = new Event(-1);
-      if(homeworkPacket != null && homeworkPacket.getCharacter() != null) {
+      if(homeworkPacket.getCharacter() != null) {
         Main.changeScore(homeworkPacket.getCharacter().getScore());
       } else {
         Main.changeScore("No score");

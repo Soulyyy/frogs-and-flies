@@ -64,20 +64,9 @@ public class Main extends Application {
     client.connect();
     System.out.println("Client working!");
     client.submitMessage(new HomeworkPacket(-1, "start"));
-    //TextField
-    //menu.getChildren().add(startButton());
-
-/*    primaryStage.setTitle("Frogs and Files");
-    Button button = new Button();
-    button.setText("Say 'kush'");
-    button.setOnAction(event -> System.out.println("BOOM"));*/
-
     Label nameLabel = new Label(name);
 
     scoreLabel = new Label("0");
-    //TextField scoreField = new TextField("");
-    //scoreField.setText("a");
-    //TextField nameField = new TextField(name);
     scoreLabel.setLayoutX(650);
     scoreLabel.setLayoutY(100);
     nameLabel.setLayoutX(650);
@@ -136,19 +125,6 @@ public class Main extends Application {
         Cache.event.update(4);
       }
     });
-
-    /*new Thread(new Task<Void>() {
-
-      @Override
-      protected Void call() throws Exception {
-        while (true) {
-          Thread.sleep(1000);
-          updateGameField(black);
-          Thread.sleep(1000);
-          updateGameField(yellow);
-        }
-      }
-    }).start();*/
   }
 
   public Rectangle[][] initializeGameField(int M, int N) {
@@ -194,18 +170,6 @@ public class Main extends Application {
     }
   }
 
-  public Pane createMenu() {
-    Pane pane = new Pane();
-    TextField ip = new TextField("localhost");
-    TextField userName = new TextField("Name here!");
-    Button button = new Button("Connect");
-    return pane;
-  }
-
-  public Button connectButton() {
-
-    return new Button();
-  }
 
   public Button chooseFly(Scene scene, Stage stage) {
     Button button = new Button("Choose Fly");
@@ -228,11 +192,5 @@ public class Main extends Application {
 
     });
     return button;
-  }
-
-  public void changeMode(Pane pane, Button fly, Button frog, TextField scoreField, TextField nameField) {
-    pane.getChildren().removeAll(fly, frog);
-    pane.getChildren().addAll(scoreField, nameField);
-
   }
 }

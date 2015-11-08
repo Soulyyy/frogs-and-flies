@@ -7,6 +7,6 @@ import java.io.Serializable;
  */
 public interface Processor<T extends Serializable> {
 
-  public T process(T message);
+  T process(T message);
 
 }

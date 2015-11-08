@@ -7,12 +7,12 @@ import java.io.Serializable;
  */
 public interface Character extends Serializable {
 
-  public int[][] visibleMap();
+  int[][] visibleMap();
 
   //We mask the field we send
-  public int[] [] mask();
+  int[] [] mask();
 
-  public void updateScore();
+  void updateScore();
 
-  public String getScore();
+  String getScore();
 }

@@ -51,10 +51,7 @@ public class SubmitterThread<T extends Serializable, U extends Processor<T>> imp
       try {
         T input = QUEUE.take();
         U processor = supplier.get();
-        //Processor processor = new HomeworkProcessor<>();
-        //TODO shit cast, work with it
         Messager messager = null;
-        //T resp = (T) processor.process(input);
         T resp = processor.process(input);
         if (resp instanceof HomeworkPacket) {
           System.out.println("TERXXXXX");

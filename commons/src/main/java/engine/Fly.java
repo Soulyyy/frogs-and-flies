@@ -44,12 +44,10 @@ public class Fly implements Character, Serializable {
     int[][] ints = this.gameField;
     for (int i = 0; i < ints.length; i++) {
       for (int j = 0; j < ints[0].length; j++) {
-        if(!(this.x + vision >= j && this.x-vision <= j && this.y + vision >=i && this.y -vision <= i)) {
+        if (!(this.x + vision >= j && this.x - vision <= j && this.y + vision >= i && this.y - vision <= i)) {
           ints[j][i] = 0;
 
         }
-/*        if (!(i >= this.y - vision && i <= this.y + vision && j >= this.x - vision && j <= this.x + vision)) {
-        }*/
       }
     }
     return ints;
@@ -71,6 +69,6 @@ public class Fly implements Character, Serializable {
 
   @Override
   public String getScore() {
-    return score+"";
+    return score + "";
   }
 }

@@ -20,8 +20,6 @@ public class Main {
     while (true) {
       System.out.println(threadnumber);
       server.createSocket(threadnumber);
-      //Connection<HomeworkPacket> con = server.createSocket();
-      //con.submitMessage(new HomeworkPacket(threadnumber, "start"));
       threadnumber++;
     }
 

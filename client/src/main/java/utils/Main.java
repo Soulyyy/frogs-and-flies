@@ -17,8 +17,6 @@ public class Main {
     Client<HomeworkPacket> client = new ClientImpl<>(ClientProcessor::new);
     client.connect();
     System.out.println("Client working!");
-
-    BufferedOutputStream outputStream = new BufferedOutputStream(client.getOutputStream());
     client.submitMessage(new HomeworkPacket(-1, "start"));
     while (true) {
     }

@@ -21,14 +21,6 @@ public class HomeworkPacket implements Serializable {
 
   private Event event;
 
-  //Example of what happens to transient fields
-  transient String teletups = "TELETUPS";
-
-  public HomeworkPacket() {
-    this(-1, "Nothing");
-
-  }
-
   public HomeworkPacket(int id, Event event, Character character, String username) {
     this.id = id;
     this.event = event;

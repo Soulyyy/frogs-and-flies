@@ -14,10 +14,6 @@ public class Spectator implements Character, Serializable {
     this.gameField = gameField;
   }
 
-  public Spectator() {
-
-  }
-
   @Override
   public int[][] visibleMap() {
     return mask();

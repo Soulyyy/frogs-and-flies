@@ -16,7 +16,7 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Created by Hans on 22/10/2015.
  */
-public class ConnectionImpl<T extends Serializable> implements Connection<T> {
+public class ConnectionImpl<T extends Serializable> implements Connection {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ConnectionImpl.class);
 
@@ -24,10 +24,6 @@ public class ConnectionImpl<T extends Serializable> implements Connection<T> {
   private Socket socket;
 
   ReceiverThread<T> receiverThread;
-
-  //SubmitterThread<T> submitterThread;
-
-  //private BlockingQueue<T> blockingQueue;
 
   //Only need this constructor, server socket has all data we care about
   public ConnectionImpl(ServerSocket serverSocket, BlockingQueue<T> blockingQueue, int id) {
@@ -64,17 +60,6 @@ public class ConnectionImpl<T extends Serializable> implements Connection<T> {
         e.printStackTrace();
       }
     }
-
-  }
-
-  @Override
-  public InputStream getInputStream() {
-    try {
-      return this.socket.getInputStream();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return null;
   }
 
   @Override
@@ -88,15 +73,9 @@ public class ConnectionImpl<T extends Serializable> implements Connection<T> {
   }
 
   @Override
-  public void submitMessage(T message) {
-    Messager messager = new Messager<T>(message, this.getOutputStream());
-    new Thread(messager).start();
-  }
-
-  @Override
   public Socket getSocket() {
     return this.socket;
   }
 
-
 }
+

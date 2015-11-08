@@ -9,20 +9,16 @@ import java.io.Serializable;
  */
 public interface Client<T extends Serializable> {
 
-  public void connect();
+  void connect();
 
-  public void disconnect();
+  void disconnect();
 
-  public InputStream getInputStream();
+  InputStream getInputStream();
 
-  public OutputStream getOutputStream();
+  OutputStream getOutputStream();
 
-  public void submitMessage(T message);
+  void submitMessage(T message);
 
-  public T receiveMessage();
-
-  //public ReceiverThread<T> getReceiverThread();
-
-
+  T receiveMessage();
 
 }

@@ -76,8 +76,8 @@ public class ServerImpl<T extends Serializable, U extends Processor<T>> implemen
   }
 
   @Override
-  public Connection<T> createSocket(int id) {
-    Connection<T> connection = new ConnectionImpl<>(this.serverSocket, blockingQueue, id);
+  public Connection createSocket(int id) {
+    Connection connection = new ConnectionImpl<>(this.serverSocket, blockingQueue, id);
     this.submitterThread.addSocket(id, connection.getSocket());
     LOGGER.debug("Connection {} is returned from socket", connection);
     return connection;

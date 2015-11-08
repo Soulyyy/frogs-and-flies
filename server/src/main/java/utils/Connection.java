@@ -10,17 +10,12 @@ import java.net.Socket;
  */
 
 //TODO Think whether handling connections should belong in commons(Client is also a type of connection)
-public interface Connection<T extends Serializable> {
+public interface Connection {
 
-  public void close();
+  OutputStream getOutputStream();
 
-  public InputStream getInputStream();
+  Socket getSocket();
 
-  public OutputStream getOutputStream();
-
-  //TODO think about this, it is just to gain access to Service messaging(sending message outside handler)
-  public void submitMessage(T message);
-
-  public Socket getSocket();
+  void close();
 
 }

@@ -29,11 +29,15 @@ public class Engine {
   //This is part of the main loop
   //Check with array length
   public synchronized int[] validatePosition(int m, int n, Character character, int x, int y) {
+    if (x < 0 || y < 0 || x >= game[0].length || y >= game.length) {
+      x = m;
+      y = n;
+    }
     //Ad hoc fix, dont remove from list, always dead, always blocked
     if (dead.contains(character)) {
-      for(int i = 0; i < game.length; i++) {
-        for(int j = 0 ; j < game[0].length ; j++) {
-          if(game[i][j] != null && game[i][j].equals(character)) {
+      for (int i = 0; i < game.length; i++) {
+        for (int j = 0; j < game[0].length; j++) {
+          if (game[i][j] != null && game[i][j].equals(character)) {
             game[i][j] = null;
             LOGGER.warn("SOMETHING DIED!");
             break;
@@ -73,6 +77,7 @@ public class Engine {
       LOGGER.info("Changing values");
       LOGGER.info("x is : {} and y is : {}", x, y);
       LOGGER.info("n is : {} and m is : ", n, m);
+      //Walk through walls, a feature imo
       System.out.println(m <= 0);
       System.out.println(m);
       game[x][y] = null;
@@ -80,7 +85,7 @@ public class Engine {
     } else {
       System.out.println("BORKEN REQUEST LALALALA");
     }
-    System.out.println("New position is" +m+" "+n);
+    System.out.println("New position is" + m + " " + n);
     return new int[]{n, m};
   }
 
@@ -120,7 +125,7 @@ public class Engine {
     return resp;
   }
 
-//TODO Remove, quick hack
+  //TODO Remove, quick hack
   public Character[][] getGame() {
     return game;
   }
