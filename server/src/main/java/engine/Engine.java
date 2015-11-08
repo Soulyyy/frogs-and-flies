@@ -29,6 +29,9 @@ public class Engine {
   //This is part of the main loop
   //Check with array length
   public synchronized int[] validatePosition(int m, int n, Character character, int x, int y) {
+    if (m < 0 || n < 0 || m >= game[0].length || n >= game.length) {
+      return new int[]{y, x};
+    }
     if (x < 0 || y < 0 || x >= game[0].length || y >= game.length) {
       x = m;
       y = n;
@@ -76,7 +79,7 @@ public class Engine {
       }
       LOGGER.info("Changing values");
       LOGGER.info("x is : {} and y is : {}", x, y);
-      LOGGER.info("n is : {} and m is : ", n, m);
+      LOGGER.info("n is : {} and m is : {}", n, m);
       //Walk through walls, a feature imo
       System.out.println(m <= 0);
       System.out.println(m);

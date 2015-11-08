@@ -43,29 +43,8 @@ public class EventHandler {
           return new int[]{x+1, y};
         }
       default:
-        System.out.println("REALLY BROKEN");
         return new int[]{x, y};
     }
-  }
-
-  public void processUpMovement() {
-
-  }
-
-  public void processDownMovement() {
-
-  }
-
-  public void processLeftMovement() {
-
-  }
-
-  public void processRightMovement() {
-
-  }
-
-  public void processCharacterPick(boolean b) {
-
   }
 
 }

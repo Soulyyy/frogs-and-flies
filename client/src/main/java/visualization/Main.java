@@ -73,7 +73,6 @@ public class Main extends Application {
     nameLabel.setLayoutY(200);
 
     Pane root = new Pane();
-    //root.getChildren().add(button);
     rects = initializeGameField(8, 8);
     List<Rectangle> rectangleList = Arrays.stream(rects).flatMap(Arrays::stream).collect(Collectors.toList());
     Rectangle[] rectangles = rectangleList.toArray(new Rectangle[rectangleList.size()]);
