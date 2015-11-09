@@ -3,7 +3,7 @@ dependencies {
 }
 
 fatJar.manifest {
-    attributes 'Main-Class': 'visualization.Main'
+    attributes 'Main-Class': 'utils.Main'
 }
 
 build.dependsOn(fatJar)

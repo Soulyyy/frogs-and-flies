@@ -1,5 +1,8 @@
 package connection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
@@ -12,6 +15,8 @@ import java.util.function.Supplier;
  * Created by Hans on 13/10/2015.
  */
 public class SubmitterThread<T extends Serializable, U extends Processor<T>> implements Runnable {
+
+  static final Logger LOGGER = LoggerFactory.getLogger(SubmitterThread.class);
 
   private final BlockingQueue<T> QUEUE;
 
@@ -46,7 +51,7 @@ public class SubmitterThread<T extends Serializable, U extends Processor<T>> imp
 
   @Override
   public void run() {
-    System.out.println("ran runner");
+    LOGGER.info("ran runner");
     while (true) {
       try {
         T input = QUEUE.take();
@@ -54,17 +59,14 @@ public class SubmitterThread<T extends Serializable, U extends Processor<T>> imp
         Messager messager = null;
         T resp = processor.process(input);
         if (resp instanceof HomeworkPacket) {
-          System.out.println("TERXXXXX");
           HomeworkPacket homeworkPacket = (HomeworkPacket) resp;
-          System.out.println("JUST BEFORE INSERT: \n"+homeworkPacket.toString());
+          LOGGER.debug("Packet just before insert: \n {}",homeworkPacket.toString());
           int id = homeworkPacket.getId();
           if (this.socket == null) {
-            System.out.println(map);
-            System.out.println(id);
-            System.out.println(map.get(id));
-            messager = new Messager<T>(resp, map.get(id).getOutputStream());
+            LOGGER.info("Socket is null, using map");
+            messager = new Messager<>(resp, map.get(id).getOutputStream());
           } else {
-            messager = new Messager<T>(resp, socket.getOutputStream());
+            messager = new Messager<>(resp, socket.getOutputStream());
           }
         }
         if (messager != null) {

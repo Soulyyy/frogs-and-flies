@@ -72,7 +72,6 @@ public class Engine {
 
         } else if (newSpot instanceof Frog && character instanceof Fly) {
           dead.add(character);
-          character = null;
           newSpot.updateScore();
           return new int[]{-666};
         }
@@ -86,9 +85,9 @@ public class Engine {
       game[x][y] = null;
       game[m][n] = character;
     } else {
-      System.out.println("BORKEN REQUEST LALALALA");
+      LOGGER.warn("Request seems to be broken!");
     }
-    System.out.println("New position is" + m + " " + n);
+    LOGGER.info("New position is" + m + " " + n);
     return new int[]{n, m};
   }
 

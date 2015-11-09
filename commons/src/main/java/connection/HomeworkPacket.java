@@ -9,6 +9,7 @@ import java.io.Serializable;
  * Created by Hans on 19/10/2015.
  */
 public class HomeworkPacket implements Serializable {
+
   private int id;
   private String message;
 

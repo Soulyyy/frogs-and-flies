@@ -1,5 +1,8 @@
 package connection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -11,21 +14,16 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ReceiverThread<T extends Serializable> implements Runnable {
 
-/*  private final ExecutorCompletionService<T> EXECUTOR;
-  private final InputStream INPUT;
-  //private final Socket SOCKET;*/
+  static final Logger LOGGER = LoggerFactory.getLogger(ReceiverThread.class);
 
   private final BlockingQueue<T> QUEUE;
-  //private final InputStream INPUTSTREAM;
   private final Socket SOCKET;
 
   int id;
 
   public ReceiverThread(Socket socket, BlockingQueue<T> blockingQueue, int id) {
     this.QUEUE = blockingQueue;
-    //this.PROCESSOR = processor;
     this.SOCKET = socket;
-    //this.type = clazz;
     this.id = id;
   }
 
@@ -48,9 +46,8 @@ public class ReceiverThread<T extends Serializable> implements Runnable {
         if (homeworkPacket.getId() == -1) {
           homeworkPacket.setId(this.id);
         }
-        System.out.println(homeworkPacket.toString());
         //TODO reimplement
-        System.out.println("PUTTING THIS GUY:\n"+homeworkPacket);
+        LOGGER.debug("Inserting this element to queue:\n {}", homeworkPacket);
         QUEUE.put((T) homeworkPacket);
       } catch (IOException | ClassNotFoundException | InterruptedException e) {
         e.printStackTrace();

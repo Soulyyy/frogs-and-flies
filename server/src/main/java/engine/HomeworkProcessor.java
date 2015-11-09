@@ -2,13 +2,17 @@ package engine;
 
 import connection.HomeworkPacket;
 import connection.Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
 /**
  * Created by Hans on 22/10/2015.
  */
-public class HomeworkProcessor<T extends Serializable> implements Processor<HomeworkPacket> {
+public class HomeworkProcessor implements Processor<HomeworkPacket> {
+
+  static final Logger LOGGER = LoggerFactory.getLogger(HomeworkProcessor.class);
 
   private Engine engine;
 
@@ -18,32 +22,31 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
 
   @Override
   public HomeworkPacket process(HomeworkPacket message) {
-    System.out.println("homeworkprocessor processing");
-    String string = "";
+    LOGGER.info("HomeworkProcessor processing");
+    String string;
     if ("start".equals(message.getMessage())) {
-      System.out.println("Message is start");
+      LOGGER.debug("Message is start");
       string = "started";
       return new HomeworkPacket(message.getId(), string);
     }
-    System.out.println("Message is not start");
+    LOGGER.debug("Message is not start");
     return processHomeworkPacket(message);
   }
 
 
   public HomeworkPacket processHomeworkPacket(HomeworkPacket homeworkPacket) {
-    System.out.println("BEFORE PROCESSING THE PACKET IS:\n" + homeworkPacket);
+    LOGGER.info("The packet before processing is:\n" + homeworkPacket);
     Character character = (homeworkPacket.getCharacter() == null) ? new Spectator(this.engine.getGameField()) : homeworkPacket.getCharacter();
-    System.out.println("AFTER CHARACTER CHECK:\n" + homeworkPacket);
+    LOGGER.debug("The packet after character check is:\n" + homeworkPacket);
     int x = homeworkPacket.getX();
     int y = homeworkPacket.getY();
     if (homeworkPacket.getEvent() != null) {
       Event event = homeworkPacket.getEvent();
       if (character instanceof Spectator) {
-        System.out.println("SPECTATOR DONT CARE");
-
+        LOGGER.debug("User is a spectator");
         //Choose frog
         if (event.getFirstEvent() == 5) {
-          System.out.println("Created new frog");
+          LOGGER.info("Created new frog");
           //character = new Frog(this.engine.getGameField(), 0, 0);
           while (true) {
             x = (int) Math.round(Math.random() * (engine.getGameField()[0].length - 1));
@@ -58,7 +61,7 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
         //Choose fly
         else if (event.getFirstEvent() == 6) {
           //Check for a free spot to start!
-          System.out.println("Created new fly");
+          LOGGER.info("Created new fly");
           //character = new Fly(this.engine.getGameField(), 0, 0);
           while (true) {
             x = (int) Math.round(Math.random() * (engine.getGame()[0].length - 1));
@@ -73,30 +76,23 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
           y = 0;*/
         } else {
           ((Spectator) character).updateMap(engine.getGameField());
-          System.out.println("not a valid event");
+          LOGGER.warn("Not a valid event");
         }
       } else if (character instanceof Frog) {
         x = ((Frog) character).x;
         y = ((Frog) character).y;
-        System.out.println("ENTERING FROG:\n" + homeworkPacket);
-        System.out.println("Found a frog");
+        LOGGER.info("Found a frog, {}", homeworkPacket);
         boolean doubleMove = event.getEvents()[0] == event.getEvents()[1];
 
         Frog tmp = (Frog) character;
         int[] ints = processFrog(tmp, doubleMove, event, x, y);
         if (ints.length == 1) {
-          System.out.println("DEAD");
+          LOGGER.info("DEAD");
           new HomeworkPacket(-100, "Dead");
         } else {
           x = ints[1];
           y = ints[0];
           tmp.updateMap(engine.getGameField(tmp), ints[0], ints[1]);
-          for (int i = 0; i < engine.getGameField().length; i++) {
-            for (int j = 0; j < engine.getGameField()[0].length; j++) {
-              System.out.print(engine.getGameField()[i][j]);
-            }
-            System.out.println();
-          }
         }
         character = tmp;
         ((Frog) character).x = x;
@@ -109,24 +105,17 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
       } else if (character instanceof Fly) {
         x = ((Fly) character).x;
         y = ((Fly) character).y;
-        System.out.println("ENTERING FLY:\n" + homeworkPacket);
-        System.out.println("Found a fly");
+        LOGGER.info("Found a fly, {}", homeworkPacket);
         Fly tmp = (Fly) character;
-        System.out.println("X AND Y BEFORE PARSE: " + x + " " + y);
+        LOGGER.debug("X and Y before actual parsing: " + x + " " + y);
         int[] ints = processFly(tmp, event, x, y);
         x = ints[1];
         y = ints[0];
         if (ints.length == 1) {
-          System.out.println("DEAD");
+          LOGGER.info("Dead");
           new HomeworkPacket(-100, "Dead");
         } else {
           tmp.updateMap(engine.getGameField(tmp), y, x);
-          for (int i = 0; i < engine.getGameField().length; i++) {
-            for (int j = 0; j < engine.getGameField()[0].length; j++) {
-              System.out.print(engine.getGameField()[i][j]);
-            }
-            System.out.println();
-          }
         }
         character = tmp;
         ((Fly) character).x = x;
@@ -134,7 +123,7 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
         homeworkPacket.setX(x);
         homeworkPacket.setY(y);
         homeworkPacket.setEvent(new Event(-1));
-        System.out.println("FLY PACKET IS : \n" + homeworkPacket);
+        LOGGER.info("Fly packet is: \n" + homeworkPacket);
         return homeworkPacket;
         //return new HomeworkPacket(homeworkPacket.getId(), new Event(-1), character, homeworkPacket.getUsername());
 
@@ -142,23 +131,23 @@ public class HomeworkProcessor<T extends Serializable> implements Processor<Home
 
     }
     //Always send empty event back, null the queue
-    System.out.println("SET X AS : " + x + " and Y as : " + y);
+    LOGGER.info("Set X as : " + x + " and Y as : " + y);
     HomeworkPacket resp = new HomeworkPacket(homeworkPacket.getId(), new Event(-1), character, homeworkPacket.getUsername());
 
     return resp;
   }
 
   private int[] processFrog(Frog frog, boolean doubleMove, Event event, int x, int y) {
-    System.out.println("Processing frog movement");
+    LOGGER.debug("Processing frog movement");
     int[] ints = EventHandler.processEvent(event, doubleMove, x, y);
-    System.out.println("INTS LENGTH: " + ints.length);
-    System.out.println("0:" + ints[0]);
-    System.out.println("1:" + ints[1]);
+    LOGGER.debug("Number of parameters: " + ints.length);
+    LOGGER.debug("0:" + ints[0]);
+    LOGGER.debug("1:" + ints[1]);
     return engine.validatePosition(ints[0], ints[1], frog, x, y);
   }
 
   private int[] processFly(Fly fly, Event event, int x, int y) {
-    System.out.println("Processing fly movement");
+    LOGGER.debug("Processing fly movement");
     int[] ints = EventHandler.processEvent(event, false, x, y);
     return engine.validatePosition(ints[0], ints[1], fly, x, y);
   }

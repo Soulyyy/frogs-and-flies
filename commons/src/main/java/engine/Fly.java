@@ -53,6 +53,15 @@ public class Fly implements Character, Serializable {
     return ints;
   }
 
+  public void updateScore() {
+    this.score = (System.currentTimeMillis() - startTime) / 12;
+  }
+
+  @Override
+  public String getScore() {
+    return score + "";
+  }
+
   @Override
   public String toString() {
     return "Fly{" +
@@ -63,12 +72,4 @@ public class Fly implements Character, Serializable {
         '}';
   }
 
-  public void updateScore() {
-    this.score = (System.currentTimeMillis() - startTime) / 12;
-  }
-
-  @Override
-  public String getScore() {
-    return score + "";
-  }
 }

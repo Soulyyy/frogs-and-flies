@@ -143,7 +143,7 @@ public class ClientImpl<T extends Serializable, U extends Processor<T>> implemen
 
   @Override
   public void submitMessage(T message) {
-    System.out.println(message.toString());
+    LOGGER.debug("Message as string is : {}", message.toString());
     Messager messager = new Messager<>(message, this.getOutputStream());
     new Thread(messager).start();
   }
